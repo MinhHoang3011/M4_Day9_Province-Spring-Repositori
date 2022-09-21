@@ -1,7 +1,12 @@
-package com.example.configuration;
+package com.codegym.cms.configuration;
 
-import com.example.formatter.ProvinceFormatter;
-import com.example.sevice.province.ProvinceService;
+import com.codegym.cms.formatter.ProvinceFormatter;
+import com.codegym.cms.repository.ICustomerRepository;
+import com.codegym.cms.repository.IProvinceRepository;
+import com.codegym.cms.service.customer.CustomerService;
+import com.codegym.cms.service.customer.ICustomerService;
+import com.codegym.cms.service.province.IProvinceService;
+import com.codegym.cms.service.province.ProvinceService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
@@ -10,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -33,8 +39,9 @@ import java.util.Properties;
 @Configuration
 @EnableWebMvc
 @EnableTransactionManagement
-@EnableJpaRepositories("com.example.repository")
-@ComponentScan("com.example")
+@ComponentScan("com.codegym.cms")
+@EnableJpaRepositories("com.codegym.cms.repository")
+@EnableSpringDataWebSupport
 public class AppConfig implements WebMvcConfigurer, ApplicationContextAware {
 
     private ApplicationContext applicationContext;
@@ -82,7 +89,7 @@ public class AppConfig implements WebMvcConfigurer, ApplicationContextAware {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
-        em.setPackagesToScan("com.example.model");
+        em.setPackagesToScan("com.codegym.cms.model");
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
@@ -112,6 +119,16 @@ public class AppConfig implements WebMvcConfigurer, ApplicationContextAware {
         properties.setProperty("hibernate.hbm2ddl.auto", "update");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
         return properties;
+    }
+
+    @Bean
+    public ICustomerService customerService() {
+        return new CustomerService();
+    }
+
+    @Bean
+    public IProvinceService provinceService(){
+        return new ProvinceService();
     }
 
     @Override

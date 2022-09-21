@@ -1,28 +1,26 @@
-package com.example.model;
+package com.codegym.cms.model;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "customers")
 public class Customer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
 
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     private String firstName;
     private String lastName;
+
     @ManyToOne
     @JoinColumn(name = "province_id")
     private Province province;
+    public Customer() {}
 
-    public Customer(Long id, String firstName, String lastName, Province province) {
-        this.id = id;
+    public Customer(String firstName, String lastName, Province province) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.province = province;
-    }
-
-    public Customer() {
     }
 
     public Customer(String firstName, String lastName) {
@@ -30,10 +28,9 @@ public class Customer {
         this.lastName = lastName;
     }
 
-    public Customer(String firstName, String lastName, Province province) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.province = province;
+    @Override
+    public String toString() {
+        return String.format("Customer[id=%d, firstName='%s', lastName='%s']", id, firstName, lastName);
     }
 
     public Long getId() {

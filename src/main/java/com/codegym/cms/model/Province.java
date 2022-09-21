@@ -1,27 +1,25 @@
-package com.example.model;
+package com.codegym.cms.model;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table (name = "provinces")
+@Table(name = "provinces")
 public class Province {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
 
     @OneToMany(targetEntity = Customer.class)
     private List<Customer> customers;
 
-    public Province(Long id, String name, List<Customer> customers) {
-        this.id = id;
-        this.name = name;
-        this.customers = customers;
+    public Province() {
     }
 
-    public Province() {
+    public Province(String name) {
+        this.name = name;
     }
 
     public Long getId() {
